@@ -5,14 +5,14 @@ let getCollectionFn = (collection) => {
 
     return () => {
         if (!_col) {
-            _col = dbConnection.then(db => {
+            _col = dbConnection().then(db => {
                 return db.collection(collection);
             });
         }
         return _col;
     }
-}
+};
 
 module.exports = {
-    recipes = getCollectionFn("recipes");
-}
+    recipes: getCollectionFn("recipes")
+};
