@@ -1,0 +1,29 @@
+{
+  "name": "cs-546-lab-7",
+  "version": "1.0.0",
+  "description": "CS546: Lab 7 - Recipe API",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rpatel1291/Lab7-Recipe-API.git"
+  },
+  "author": {
+    "name": "Ravi Patel",
+    "cwid": "10432313"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/rpatel1291/Lab7-Recipe-API/issues"
+  },
+  "homepage": "https://github.com/rpatel1291/Lab7-Recipe-API#readme",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2",
+    "mongodb": "^3.0.4",
+    "node-uuid": "^1.4.8"
+  }
+}
