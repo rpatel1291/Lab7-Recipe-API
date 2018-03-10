@@ -52,14 +52,84 @@ const exportedMethods = {
         const newId = newRecipeInfo.insertedId;
         return await this.getRecipeById(newId);
     },
+    //Put
+    async updateWholeRecipeById(id, updateRecipe) {
+        const recipeCollection = await recipes();
+        const updateRecipeData = {};
+
+        if (updateRecipe.title && updateRecipe.ingredients && updateRecipe.steps) {
+
+            if (typeof updateRecipe.title !== "string" || updateRecipe.title === "") throw "Recipe title not provided";
+
+            updateRecipeData.title = updateRecipe.title;
+
+            if (!Array.isArray(updateRecipe.steps) || updateRecipe.steps.length === 0) throw "Steps must be provided";
+            updateRecipe.steps.forEach(step => {
+                if (typeof step !== "string" || step === "") throw "Step is missing";
+            })
+            updateRecipeData.steps = updateRecipe.steps;
+
+            if (!Array.isArray(updateRecipe.ingredients) || updateRecipe.ingredients.length === 0) throw "Recipe ingredients not provided";
+            updateRecipe.ingredients.forEach(ingredient => {
+                if (typeof ingredient.name !== "string" || ingredient.name === "") throw "Recipe name is not provided";
+                if (typeof ingredient.amount !== "string" || ingredient.amount === "") throw "Recipe amount is not provided";
+            })
+
+            updateRecipeData.ingredients = updateRecipe.ingredients;
+
+            let updateCommand = {
+                $set: updateRecipeData
+            };
+            let query = {
+                _id: id
+            };
+
+            await recipeCollection.updateOne(query, updateCommand);
+            return await this.getRecipeById(id);
+
+        }
+        else throw "Recipe's title, ingredients, and steps are not changed";
+
+    },
+    //Patch
     async updateRecipeById(id, updateRecipe) {
         const recipeCollection = await recipes();
-        const updatedRecipeData = {};
 
-        if (updateRecipe.title) { }
-        if (updateRecipe.ingredients) { }
-        if (updateRecipe.steps) { }
+        const updateRecipeData = {};
 
+
+        if (updateRecipe.steps) {
+            if (!Array.isArray(updateRecipe.steps) || updateRecipe.steps.length === 0) throw "Steps must be provided";
+            updateRecipe.steps.forEach(step => {
+                if (typeof step !== "string" || step === "") throw "Step is missing";
+            })
+
+            updateRecipeData.steps = updateRecipe.steps;
+        }
+
+        if (updateRecipe.title) {
+            if (typeof updateRecipe.title !== "string" || updateRecipe.title === "") throw "Recipe title not provided";
+
+            updateRecipeData.title = updateRecipe.title;
+        }
+
+        if (updateRecipe.ingredients) {
+            if (!Array.isArray(updateRecipe.ingredients) || updateRecipe.ingredients.length === 0) throw "Recipe ingredients not provided";
+            updateRecipe.ingredients.forEach(ingredient => {
+                if (typeof ingredient.name !== "string" || ingredient.name === "") throw "Ingredient Name is not provided";
+                if (typeof ingredient.amount !== "string" || ingredient.amount === "") throw "Ingredient Amount is not provided";                
+            })
+            updateRecipeData.ingredients = updateRecipe.ingredients;
+        }
+
+        let updateCommand = {
+            $set: updateRecipeData
+        };
+        let query = {
+            _id: id
+        };
+        await recipeCollection.updateOne(query, updateCommand);
+        return await this.getRecipeById(id);
 
     },
     async removeRecipe(id) {

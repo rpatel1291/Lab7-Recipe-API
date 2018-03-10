@@ -45,10 +45,36 @@ router.delete("/:id", async (req, res) => {
         res.status(500).json({ error: e });
     }
 });
-router.put("/:id", async (req, res) =>){
-
+router.put("/:id", async (req, res) =>{
+    const recipe = req.body;
+    try {
+        await recipeData.getRecipeById(req.params.id);
+        res.status(200);
+    } catch (e) {
+        res.status(404).json({ error: e });
+    }
+    try {
+        const updateRecipe = await recipeData.updateWholeRecipeById(req.params.id, recipe);
+        res.status(200).json(updateRecipe);
+    } catch (e) {
+        res.status(404).json({ error: e });
+    }
 });
 router.patch("/:id", async (req, res) => {
+    const recipe = req.body;
+    try {
+        await recipeData.getRecipeById(req.params.id);
+        res.status(200);
+    }
+    catch (e) {
+        res.status(404).json({ error: e });
+    }
+    try {
+        const updateRecipe = await recipeData.updateRecipeById(req.params.id, recipe);
+        res.status(200).json(updateRecipe);
 
+    } catch (e) {
+        res.json(404).json({ error: e });
+    }
 });
 module.exports = router;
